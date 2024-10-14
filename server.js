@@ -1,23 +1,13 @@
-//WEB322 – Assignment 02
-//I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
-//No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
-
-//Name: Mohdeep Singh
-//Student ID: 109600239
-//Date: 14 October 2024
-//Vercel Web App URL: 
-//GitHub Repository URL: https://github.com/mohdeep12345/web322-app.git
-
-//********************************************************************************/ 
-
 // Import required modules
 const express = require('express');
-const app = express();
 const path = require('path');
 const storeService = require('./store-service'); // Ensure this path is correct
 
+// Create an Express application
+const app = express();
+
 // Set up static middleware for serving CSS, JS, images
-app.use(express.static(path.join(__dirname, 'public'))); // Adjusted to use path.join for safety
+app.use(express.static(path.join(__dirname, 'public'))); // Use path.join for safety
 
 // Define routes
 
@@ -33,34 +23,31 @@ app.get('/about', (req, res) => {
 
 // /shop route - return only published items
 app.get('/shop', (req, res) => {
-    storeService.getPublishedItems() // Ensure this function exists in store-service
-        .then((data) => {
-            res.json(data);  // Send the published items back to the client as JSON
-        })
+    storeService.getPublishedItems()
+        .then((data) => res.json(data))  // Send published items back as JSON
         .catch((err) => {
-            res.status(500).json({ message: err });  // Send an error message if it fails
+            console.error(err);  // Log the error for debugging
+            res.status(500).json({ message: "Error retrieving published items." });
         });
 });
 
 // /items route - return all items
 app.get('/items', (req, res) => {
     storeService.getAllItems()
-        .then((data) => {
-            res.json(data);  // Send all items back to the client as JSON
-        })
+        .then((data) => res.json(data))  // Send all items back as JSON
         .catch((err) => {
-            res.status(500).json({ message: err });  // Send an error message if it fails
+            console.error(err);  // Log the error for debugging
+            res.status(500).json({ message: "Error retrieving all items." });
         });
 });
 
 // /categories route - return all categories
 app.get('/categories', (req, res) => {
-    storeService.getCategories() // Ensure this function is defined in store-service
-        .then((data) => {
-            res.json(data);
-        })
+    storeService.getCategories()
+        .then((data) => res.json(data))
         .catch((err) => {
-            res.status(500).json({ message: err });
+            console.error(err);  // Log the error for debugging
+            res.status(500).json({ message: "Error retrieving categories." });
         });
 });
 
@@ -73,11 +60,12 @@ app.use((req, res) => {
 storeService.initialize()
     .then(() => {
         // If initialization is successful, start the server
-        app.listen(process.env.PORT || 8080, () => {
-            console.log('Express http server listening on port 8080');
+        const PORT = process.env.PORT || 8080;
+        app.listen(PORT, () => {
+            console.log(`Express HTTP server listening on port ${PORT}`);
         });
     })
     .catch((err) => {
         // If there is an error during initialization, log the error and do not start the server
-        console.log('Failed to initialize the store service: ' + err);
+        console.error('Failed to initialize the store service: ' + err);
     });
