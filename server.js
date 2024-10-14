@@ -1,3 +1,17 @@
+/*********************************************************************************
+WEB322 – Assignment 02
+I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
+No part of this assignment has been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
+
+Name: Mohdeep Singh
+Student ID: 109600239
+Date: 14 Oct 2024
+Render Web App URL: 109600239
+GitHub Repository URL: https://github.com/mohdeep12345/web322-app.git
+
+********************************************************************************/ 
+
+
 // Import required modules
 const express = require('express');
 const path = require('path');
